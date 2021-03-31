@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import SearchBar from '../components/SearchBar';
+import ResultsList from '../components/ResultsList';
 import useResults from '../hooks/useResults';
 
 const SearchScreen = () => {
@@ -9,15 +10,35 @@ const SearchScreen = () => {
     const [term, setTerm] = useState('');
     const [searchApi, results, errorMsg] = useResults();
 
+    /**
+     * Helper function that filtering the results from the Yelp API
+     * 
+     * @param {string} price The price to filter the results by ('$', '$$', '$$$')
+     * @returns {boolean} True if the price of the current result matches the given price param
+     * 
+     * @author Mark Philips
+     */
+    const filterResultsByPrice = (price) => {
+        return results.filter(result => {
+            return result.price === price;
+        });
+    };
+
     return (
-        <View>
+        <>
             <SearchBar 
                 term={ term } 
                 onTermChange={ setTerm }
                 onTermSubmit={ () => searchApi(term) }/>
+
             {errorMsg ? <Text>{errorMsg}</Text> : null}
-            <Text>We have found {results.length} results</Text>
-        </View>
+
+            <ScrollView>
+                <ResultsList header="Cost Effective" results={ filterResultsByPrice('$') }/>
+                <ResultsList header="Bit Pricier"    results={ filterResultsByPrice('$$') }/>
+                <ResultsList header="Big Spender"    results={ filterResultsByPrice('$$$') }/>
+            </ScrollView>
+        </>
     );
 };
 
