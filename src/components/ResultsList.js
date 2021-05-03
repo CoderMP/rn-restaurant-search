@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import ResultsListItem from '../components/ResultListItem';
 
 /**
@@ -8,6 +9,12 @@ import ResultsListItem from '../components/ResultListItem';
  * @author Mark Philips
  */
 const ResultsList = ({ header, results }) => {
+    // Passing the Navigation Prop directly to ResultList since it is a deeply nested component
+    const navigation = useNavigation();
+
+    // Null check to ensure that any empty lists aren't rendered
+    if (!results.length) { return null; }
+
     return (
         <View style={styles.container}>  
             <Text style={styles.headerStyle}>{header}</Text>
@@ -17,7 +24,11 @@ const ResultsList = ({ header, results }) => {
                 data={ results }
                 keyExtractor={ (result) => result.id }
                 renderItem={({ item }) => {
-                    return <ResultsListItem result={ item }/>
+                    return (
+                        <TouchableOpacity onPress={() => navigation.navigate('Detail', { id: item.id })}>
+                            <ResultsListItem result={ item }/>
+                        </TouchableOpacity>
+                    )
                 }}/>
         </View>
     );
