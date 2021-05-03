@@ -54,21 +54,21 @@ const ResultDetailScreen = ({ navigation, route }) => {
     if (!result) { 
         return null 
     } else { 
-        extractCategories(result.categories); 
-        extractHours(result.hours[0].open);
+        //extractCategories(result.categories); 
+        //extractHours(result.hours[0].open);
     }
 
     return (
         <View>
             <Text style={styles.headerStyle}>{result.name}</Text>
-            <FlatList 
+            {/* <FlatList 
                 horizontal={true}
                 style={styles.pillStyle}
                 data={result.categories}
                 keyExtractor={(categories) => categories.alias}
                 renderItem={(categories) => {
                     return <CategoryPill category={categories.title}/>
-                }}/>
+                }}/> */}
             <Text style={styles.subheaderStyle}>Contact Information</Text>
 
             <View style={styles.infoItemStyle}>
@@ -85,10 +85,10 @@ const ResultDetailScreen = ({ navigation, route }) => {
                 <Text style={styles.infoLabelStyle}>Currently </Text>
                 {result.hours[0].is_open_now ? <Text style={styles.greenText}>OPEN</Text> : <Text style={styles.redText}>CLOSED</Text>}
             </View>
-            <View style={styles.infoItemStyleAlt}>
+            {/* <View style={styles.infoItemStyleAlt}>
                 <Text style={styles.infoLabelStyle}>Hours: </Text>
                 <WeeklyCalendar />
-            </View>
+            </View> */}
             <FlatList 
                 data={result.photos} 
                 keyExtractor={(photo) => photo} 
